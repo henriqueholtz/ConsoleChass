@@ -1,9 +1,5 @@
-﻿using Board; //Folder
+﻿using board;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleChass
 {
@@ -11,7 +7,8 @@ namespace ConsoleChass
     {
         static void Main(string[] args)
         {
-            
+            Board Board = new Board(8, 8);
+            Screen.PrintBoard(Board);
         }
     }
 }
