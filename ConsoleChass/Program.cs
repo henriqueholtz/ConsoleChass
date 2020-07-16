@@ -1,5 +1,5 @@
 ﻿using board;
-using chass;
+using chess;
 using System;
 
 namespace ConsoleChass

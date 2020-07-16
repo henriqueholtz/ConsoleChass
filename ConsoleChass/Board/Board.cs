@@ -1,6 +1,4 @@
 ﻿
-using System.Diagnostics;
-
 namespace board
 {
     class Board
