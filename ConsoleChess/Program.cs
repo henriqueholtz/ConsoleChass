@@ -2,7 +2,7 @@
 using chess;
 using System;
 
-namespace ConsoleChass
+namespace ConsoleChess
 {
     class Program
     {
@@ -10,15 +10,19 @@ namespace ConsoleChass
         {
             try
             {
-                Board Board = new Board(8, 8);
+                ChessMatch Match = new ChessMatch();
+                while(!Match.Finish)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(Match.Board);
+                    Console.WriteLine();
+                    Console.Write("Origem: ");
+                    Position source = Screen.ReadPositionChess().ToPosition();
+                    Console.Write("Destino: ");
+                    Position destiny = Screen.ReadPositionChess().ToPosition();
 
-                Board.AddPiece(new Tower(Board, Color.Black), new Position(0, 0));
-                Board.AddPiece(new Tower(Board, Color.Black), new Position(1, 3));
-                Board.AddPiece(new King(Board, Color.Black), new Position(2, 4));
-
-                Board.AddPiece(new Tower(Board, Color.White), new Position(3, 5));
-
-                Screen.PrintBoard(Board);
+                    Match.PerformMovement(source, destiny);
+                }
             }
             catch(BoardException e)
             {

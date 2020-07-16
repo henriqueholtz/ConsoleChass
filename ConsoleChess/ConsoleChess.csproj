@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{01BBD8C6-A67A-490B-BF95-AAA376C7F36D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ConsoleChass</RootNamespace>
-    <AssemblyName>ConsoleChass</AssemblyName>
+    <RootNamespace>ConsoleChess</RootNamespace>
+    <AssemblyName>ConsoleChess</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="board\Board.cs" />
     <Compile Include="board\BoardException.cs" />
+    <Compile Include="board\ChessMatch.cs" />
     <Compile Include="board\Color.cs" />
     <Compile Include="board\Piece.cs" />
     <Compile Include="board\Position.cs" />

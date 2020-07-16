@@ -13,5 +13,9 @@ namespace board
             Board = board;
             Color = color;
         }
+        public void IncreaseAmountMovements()
+        {
+            AmountMovements++;
+        }
     }
 }

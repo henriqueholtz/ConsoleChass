@@ -1,7 +1,8 @@
 ﻿using System;
 using board;
+using chess;
 
-namespace ConsoleChass
+namespace ConsoleChess
 {
     class Screen
     {
@@ -42,5 +43,13 @@ namespace ConsoleChass
             }
         }
 
+        public static PositionChess ReadPositionChess()
+        {
+            string position = Console.ReadLine();
+            char column = position[0];
+            int line = int.Parse(position[1] + "");
+            return new PositionChess(column,line);
+
+        }
     }
 }

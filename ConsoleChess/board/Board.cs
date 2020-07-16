@@ -34,6 +34,21 @@ namespace board
             piece.Position = position;
         }
 
+        public Piece RemovePiece(Position pos)
+        {
+            if (Piece(pos) == null)
+            {
+                return null;
+            }
+            else
+            {
+                Piece pieceRemoved = Piece(pos);
+                pieceRemoved.Position = null;
+                Pieces[pos.Line, pos.Column] = null;
+                return pieceRemoved;
+            }
+        }
+
         public bool ExistPiece(Position position)
         {
             ValidatePosition(position); //BoardException
