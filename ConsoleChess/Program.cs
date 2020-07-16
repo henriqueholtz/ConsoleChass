@@ -16,6 +16,8 @@ namespace ConsoleChass
                 Board.AddPiece(new Tower(Board, Color.Black), new Position(1, 3));
                 Board.AddPiece(new King(Board, Color.Black), new Position(2, 4));
 
+                Board.AddPiece(new Tower(Board, Color.White), new Position(3, 5));
+
                 Screen.PrintBoard(Board);
             }
             catch(BoardException e)
