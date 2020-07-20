@@ -14,10 +14,7 @@ namespace ConsoleChess
                 try
                 {
                     Console.Clear();
-                    Screen.PrintBoard(Match.Board);
-                    Console.WriteLine();
-                    Console.WriteLine("Shift: " + Match.Shift);
-                    Console.WriteLine("Awaiting move: " + Match.CurrentPlayer);
+                    Screen.PrintMatch(Match);
 
                     Console.WriteLine();
                     //condição para não quebrar aplicação usando "7d" ou "d9"

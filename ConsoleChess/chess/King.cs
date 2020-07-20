@@ -12,6 +12,7 @@ namespace chess
         {
             return "R"; //King = Rei
         }
+
         private bool CanMove(Position pos)
         {
             Piece p = Board.Piece(pos);
