@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using board;
 using chess;
 
@@ -7,8 +8,8 @@ namespace board
     class ChessMatch
     {
         public Board Board { get; private set; }
-        private int Shift;
-        private Color CurrentPlayer; 
+        public int Shift { get; private set; }
+        public  Color CurrentPlayer { get; private set; }
         public bool Finish { get; private set; }
 
         public ChessMatch()
@@ -26,6 +27,49 @@ namespace board
             p.IncreaseAmountMovements();
             Piece pieceRemoved = Board.RemovePiece(destiny);
             Board.AddPiece(p, destiny);
+        }
+
+        public void PerformMove(Position source, Position destiny)
+        {
+            PerformMovement(source, destiny);
+            Shift ++;
+            ChangePlayer();
+        }
+
+        public void ValidateSourcePosition(Position pos)
+        {
+            if (Board.Piece(pos) == null)
+            {
+                throw new BoardException("There is no piece in this position!");
+            }
+            if (CurrentPlayer != Board.Piece(pos).Color)
+            {
+                throw new BoardException("The original piece chosen is not yours.");
+            }
+            if (!Board.Piece(pos).HavePossibleMovements())
+            {
+                throw new BoardException("There are no possible moves for the chosen piece.");
+            }
+        }
+
+        public void ValidateDestinyPosition(Position source, Position destiny)
+        {
+            if (!Board.Piece(source).CanMove(destiny))
+            {
+                throw new BoardException("Destination position invalidates.");
+            }
+        }
+
+        public void ChangePlayer()
+        {
+            if (CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
         }
 
         private void PutPieces()
