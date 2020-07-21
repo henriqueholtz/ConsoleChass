@@ -38,7 +38,7 @@ namespace board
             return false;
         }
 
-        public bool CanMove(Position pos)
+        public bool CanMove(Position pos) //Changed title in course to: PossibleMovement
         {
             return PossibleMovements()[pos.Line, pos.Column];
         }
