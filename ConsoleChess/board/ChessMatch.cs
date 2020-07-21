@@ -56,8 +56,15 @@ namespace board
             {
                 Check = false;
             }
-            Shift ++;
-            ChangePlayer();
+            if (CheckMateTest(Adversary(CurrentPlayer)))
+            {
+                Finish = true;
+            }
+            else
+            {
+                Shift++;
+                ChangePlayer();
+            }
         }
 
         public void UndoMovement(Position source, Position destiny, Piece pieceCaptured)
@@ -175,6 +182,37 @@ namespace board
                 }
             }
             return false;
+        }
+
+        public bool CheckMateTest(Color color)
+        {
+            if (!IsCheck(color))
+            {
+                return false;
+            }
+            foreach(Piece x in PiecesInPlay(color))
+            {
+                bool[,] mat = x.PossibleMovements();
+                for (int i = 0; i<Board.Lines; i++)
+                {
+                    for (int j= 0; j < Board.Columns; j++)
+                    {
+                        if (mat[i,j])
+                        {
+                            Position source = x.Position;
+                            Position destiny = new Position(i, j);
+                            Piece CapturedPiece = PerformMovement(source, destiny);
+                            bool CheckTest = IsCheck(color);
+                            UndoMovement(source, destiny,CapturedPiece);
+                            if (!CheckTest)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void PutNewPiece(char column, int line, Piece piece)

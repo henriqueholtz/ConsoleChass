@@ -8,37 +8,47 @@ namespace ConsoleChess
     {
         static void Main(string[] args)
         {
-            ChessMatch Match = new ChessMatch();
-            while (!Match.Finish)
+            try
             {
-                try
+                ChessMatch Match = new ChessMatch();
+                while (!Match.Finish)
                 {
-                    Console.Clear();
-                    Screen.PrintMatch(Match);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintMatch(Match);
 
-                    Console.WriteLine();
-                    //condição para não quebrar aplicação usando "7d" ou "d9"
-                    Console.Write("Source: ");
-                    Position source = Screen.ReadPositionChess().ToPosition();
-                    Match.ValidateSourcePosition(source);
+                        Console.WriteLine();
+                        Console.Write("Source: ");
+                        Position source = Screen.ReadPositionChess().ToPosition();
+                        Match.ValidateSourcePosition(source);
 
-                    bool[,] PossiblesPositions = Match.Board.Piece(source).PossibleMovements();
+                        bool[,] PossiblesPositions = Match.Board.Piece(source).PossibleMovements();
 
-                    Console.Clear();
-                    Screen.PrintBoard(Match.Board, PossiblesPositions);
+                        Console.Clear();
+                        Screen.PrintBoard(Match.Board, PossiblesPositions);
 
-                    Console.WriteLine();
-                    Console.Write("Destiny: ");
-                    Position destiny = Screen.ReadPositionChess().ToPosition();
-                    Match.ValidateDestinyPosition(source, destiny);
-                    Match.PerformMove(source, destiny);
+                        Console.WriteLine();
+                        Console.Write("Destiny: ");
+                        Position destiny = Screen.ReadPositionChess().ToPosition();
+                        Match.ValidateDestinyPosition(source, destiny);
+                        Match.PerformMove(source, destiny);
+                    }
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
-                catch (BoardException e)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine(e.Message);
-                    Console.ReadLine();
-                }
+                Console.Clear();
+                Screen.PrintMatch(Match);
+            }
+            catch(BoardException e)
+            {
+                Console.WriteLine();
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
         }
     }
