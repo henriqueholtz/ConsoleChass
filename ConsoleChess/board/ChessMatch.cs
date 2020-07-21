@@ -223,21 +223,21 @@ namespace board
 
         private void PutPieces()
         {
-            PutNewPiece('c', 1, new Tower(Board, Color.White));
-            PutNewPiece('c', 2, new Tower(Board, Color.White));
-            PutNewPiece('d', 2, new Tower(Board, Color.White));
-            PutNewPiece('e', 2, new Tower(Board, Color.White));
-            PutNewPiece('e', 1, new Tower(Board, Color.White));
-            PutNewPiece('d', 1, new King(Board, Color.White));
+            //PutNewPiece('c', 1, new Tower(Board, Color.White));
+            //PutNewPiece('c', 2, new Tower(Board, Color.White));
+            //PutNewPiece('d', 2, new Tower(Board, Color.White));
+            //PutNewPiece('e', 2, new Tower(Board, Color.White));
+            //PutNewPiece('e', 1, new Tower(Board, Color.White));
+            //PutNewPiece('d', 1, new King(Board, Color.White));
 
-            PutNewPiece('c', 7, new Tower(Board, Color.Black));
-            PutNewPiece('c', 8, new Tower(Board, Color.Black));
-            PutNewPiece('d', 7, new Tower(Board, Color.Black));
-            PutNewPiece('e', 8, new Tower(Board, Color.Black));
-            PutNewPiece('e', 7, new Tower(Board, Color.Black));
-            PutNewPiece('d', 8, new King(Board, Color.Black));
+            //PutNewPiece('c', 7, new Tower(Board, Color.Black));
+            //PutNewPiece('c', 8, new Tower(Board, Color.Black));
+            //PutNewPiece('d', 7, new Tower(Board, Color.Black));
+            //PutNewPiece('e', 8, new Tower(Board, Color.Black));
+            //PutNewPiece('e', 7, new Tower(Board, Color.Black));
+            //PutNewPiece('d', 8, new King(Board, Color.Black));
 
-            /*// White
+            // White
             PutNewPiece('a', 2, new Pawn(Board, Color.White));
             PutNewPiece('b', 2, new Pawn(Board, Color.White));
             PutNewPiece('c', 2, new Pawn(Board, Color.White));
@@ -271,7 +271,7 @@ namespace board
             PutNewPiece('c', 8, new Bishop(Board, Color.Black));
             PutNewPiece('f', 8, new Bishop(Board, Color.Black));
             PutNewPiece('e', 8, new Queen(Board, Color.Black));
-            PutNewPiece('d', 8, new King(Board, Color.Black));*/
+            PutNewPiece('d', 8, new King(Board, Color.Black));
         }
 
     }
