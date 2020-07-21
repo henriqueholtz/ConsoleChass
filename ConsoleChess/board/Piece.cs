@@ -17,6 +17,10 @@ namespace board
         {
             AmountMovements++;
         }
+        public void DecrementAmountMovements()
+        {
+            AmountMovements--;
+        }
 
         public bool HavePossibleMovements()
         {
