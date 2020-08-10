@@ -14,8 +14,12 @@ namespace board //Tabuleiro
 
         public void SetValues(int line, int column)
         {
-            Line = line;
-            Column = column;
+            //if (line >= 0 && line <= 7 && Column >= 0 && Column <= 7)
+            //{
+                Line = line;
+                Column = column;
+            //}
+            //não precisa lançar exceção
         }
 
         public override string ToString()
