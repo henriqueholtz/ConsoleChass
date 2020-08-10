@@ -9,10 +9,11 @@ namespace board
     {
         public Board Board { get; private set; }
         public int Shift { get; private set; }
-        public  Color CurrentPlayer { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finish { get; private set; }
         private HashSet<Piece> Pieces;
         private HashSet<Piece> Captured;
+        public Piece VulnerableEnPassant { get; private set; }
         public bool Check { get; private set; }
 
         public ChessMatch()
@@ -24,10 +25,11 @@ namespace board
             Finish = false;
             Pieces = new HashSet<Piece>();
             Captured = new HashSet<Piece>();
+            VulnerableEnPassant = null;
             PutPieces();
         }
 
-        public Piece PerformMovement(Position source, Position destiny)
+        public Piece PerformMovement(Position source, Position destiny) //ExecutaMovimento
         {
             Piece p = Board.RemovePiece(source);
             p.IncreaseAmountMovements();
@@ -37,10 +39,71 @@ namespace board
             {
                 Captured.Add(pieceRemoved);
             }
+            if (p.Color == Color.White)
+            {
+                //#SpecialMove
+                //SmallRock white
+                if (p is King && destiny.Column == source.Column + 2)
+                {
+                    Position SourceTower = new Position(source.Line, source.Column + 3);
+                    Position DestinyTower = new Position(source.Line, source.Column + 1);
+                    Piece T = Board.RemovePiece(SourceTower);
+                    Board.AddPiece(T, DestinyTower);
+                }
+
+                //BiglRock white
+                if (p is King && destiny.Column == source.Column - 2)
+                {
+                    Position SourceTower = new Position(source.Line, source.Column - 4);
+                    Position DestinyTower = new Position(source.Line, source.Column - 1);
+                    Piece T = Board.RemovePiece(SourceTower);
+                    Board.AddPiece(T, DestinyTower);
+                }
+            }
+            else //black
+            {
+                //#SpecialMove
+                //SmallRock black
+                if (p is King && destiny.Column == source.Column - 2)
+                {
+                    Position SourceTower = new Position(source.Line, source.Column - 3);
+                    Position DestinyTower = new Position(source.Line, source.Column - 1);
+                    Piece T = Board.RemovePiece(SourceTower);
+                    Board.AddPiece(T, DestinyTower);
+                }
+
+                //BiglRock black
+                if (p is King && destiny.Column == source.Column + 2)
+                {
+                    Position SourceTower = new Position(source.Line, source.Column + 4);
+                    Position DestinyTower = new Position(source.Line, source.Column + 1);
+                    Piece T = Board.RemovePiece(SourceTower);
+                    Board.AddPiece(T, DestinyTower);
+                }
+            }
+
+            //#SpecialMove EnPassant
+            if (p is Pawn)
+            {
+                if (source.Column != destiny.Column && pieceRemoved == null)
+                {
+                    Position posP;
+                    if (p.Color == Color.White)
+                    {
+                        posP = new Position(destiny.Line + 1, destiny.Column);
+                    }
+                    else //Black
+                    {
+                        posP = new Position(destiny.Line - 1, destiny.Column);
+                    }
+                    pieceRemoved = Board.RemovePiece(posP);
+                    Captured.Add(pieceRemoved);
+                }
+            }
             return pieceRemoved;
         }
 
-        public void PerformMove(Position source, Position destiny)
+        public void PerformMove(Position source, Position destiny) //RealizaJogada
         {
             Piece pieceCaptured = PerformMovement(source, destiny);
             if (IsCheck(CurrentPlayer))
@@ -65,9 +128,20 @@ namespace board
                 Shift++;
                 ChangePlayer();
             }
+
+            Piece p = Board.Piece(destiny);
+            // #SpeacilMove EnPassant
+            if (p is Pawn && (destiny.Line == source.Line - 2 || destiny.Line == source.Line + 2))
+            {
+                VulnerableEnPassant = p;
+            }
+            else
+            {
+                VulnerableEnPassant = null;
+            }
         }
 
-        public void UndoMovement(Position source, Position destiny, Piece pieceCaptured)
+        public void UndoMovement(Position source, Position destiny, Piece pieceCaptured) //DesfazMovimento
         {
             Piece p = Board.RemovePiece(destiny);
             p.DecrementAmountMovements();
@@ -77,6 +151,46 @@ namespace board
                 Captured.Remove(pieceCaptured);
             }
             Board.AddPiece(p, source);
+
+            //#SpecialMove
+            //SmallRock
+            if (p is King && destiny.Column == source.Column + 2)
+            {
+                Position SourceTower = new Position(source.Line, source.Column + 3);
+                Position DestinyTower = new Position(source.Line, source.Column + 1);
+                Piece T = Board.RemovePiece(SourceTower);
+                T.DecrementAmountMovements();
+                Board.AddPiece(T, DestinyTower);
+            }
+
+            //BigRock
+            if (p is King && destiny.Column == source.Column - 2)
+            {
+                Position SourceTower = new Position(source.Line, source.Column - 4);
+                Position DestinyTower = new Position(source.Line, source.Column - 1);
+                Piece T = Board.RemovePiece(SourceTower);
+                T.DecrementAmountMovements();
+                Board.AddPiece(T, DestinyTower);
+            }
+
+            //#SpecialMove EnPassant
+            if (p is Pawn)
+            {
+                if (source.Column != destiny.Column && pieceCaptured == VulnerableEnPassant)
+                {
+                    Piece pawn = Board.RemovePiece(destiny);
+                    Position posP;
+                    if (p.Color == Color.White)
+                    {
+                        posP = new Position(3, destiny.Column);
+                    }
+                    else //Black
+                    {
+                        posP = new Position(4, destiny.Column);
+                    }
+                    Board.AddPiece(pawn, posP);
+                }
+            }
         }
 
         public void ValidateSourcePosition(Position pos)
@@ -115,7 +229,7 @@ namespace board
             }
         }
 
-        public HashSet<Piece> PiecesInPlay(Color color) 
+        public HashSet<Piece> PiecesInPlay(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
             foreach (Piece x in Pieces)
@@ -156,7 +270,7 @@ namespace board
 
         private Piece King(Color color)
         {
-            foreach(Piece x in PiecesInPlay(color))
+            foreach (Piece x in PiecesInPlay(color))
             {
                 if (x is King)
                 {
@@ -190,20 +304,20 @@ namespace board
             {
                 return false;
             }
-            foreach(Piece x in PiecesInPlay(color))
+            foreach (Piece x in PiecesInPlay(color))
             {
                 bool[,] mat = x.PossibleMovements();
-                for (int i = 0; i<Board.Lines; i++)
+                for (int i = 0; i < Board.Lines; i++)
                 {
-                    for (int j= 0; j < Board.Columns; j++)
+                    for (int j = 0; j < Board.Columns; j++)
                     {
-                        if (mat[i,j])
+                        if (mat[i, j])
                         {
                             Position source = x.Position;
                             Position destiny = new Position(i, j);
                             Piece CapturedPiece = PerformMovement(source, destiny);
                             bool CheckTest = IsCheck(color);
-                            UndoMovement(source, destiny,CapturedPiece);
+                            UndoMovement(source, destiny, CapturedPiece);
                             if (!CheckTest)
                             {
                                 return false;
@@ -223,29 +337,15 @@ namespace board
 
         private void PutPieces()
         {
-            //PutNewPiece('c', 1, new Tower(Board, Color.White));
-            //PutNewPiece('c', 2, new Tower(Board, Color.White));
-            //PutNewPiece('d', 2, new Tower(Board, Color.White));
-            //PutNewPiece('e', 2, new Tower(Board, Color.White));
-            //PutNewPiece('e', 1, new Tower(Board, Color.White));
-            //PutNewPiece('d', 1, new King(Board, Color.White));
-
-            //PutNewPiece('c', 7, new Tower(Board, Color.Black));
-            //PutNewPiece('c', 8, new Tower(Board, Color.Black));
-            //PutNewPiece('d', 7, new Tower(Board, Color.Black));
-            //PutNewPiece('e', 8, new Tower(Board, Color.Black));
-            //PutNewPiece('e', 7, new Tower(Board, Color.Black));
-            //PutNewPiece('d', 8, new King(Board, Color.Black));
-
             // White
-            PutNewPiece('a', 2, new Pawn(Board, Color.White));
-            PutNewPiece('b', 2, new Pawn(Board, Color.White));
-            PutNewPiece('c', 2, new Pawn(Board, Color.White));
-            PutNewPiece('d', 2, new Pawn(Board, Color.White));
-            PutNewPiece('e', 2, new Pawn(Board, Color.White));
-            PutNewPiece('f', 2, new Pawn(Board, Color.White));
-            PutNewPiece('g', 2, new Pawn(Board, Color.White));
-            PutNewPiece('h', 2, new Pawn(Board, Color.White));
+            PutNewPiece('a', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('b', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('c', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('d', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('e', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('f', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('g', 2, new Pawn(Board, Color.White, this));
+            PutNewPiece('h', 2, new Pawn(Board, Color.White, this));
             PutNewPiece('a', 1, new Tower(Board, Color.White));
             PutNewPiece('h', 1, new Tower(Board, Color.White));
             PutNewPiece('b', 1, new Horse(Board, Color.White));
@@ -253,17 +353,17 @@ namespace board
             PutNewPiece('c', 1, new Bishop(Board, Color.White));
             PutNewPiece('f', 1, new Bishop(Board, Color.White));
             PutNewPiece('d', 1, new Queen(Board, Color.White));
-            PutNewPiece('e', 1, new King(Board, Color.White));
+            PutNewPiece('e', 1, new King(Board, Color.White, this));
 
             //black 
-            PutNewPiece('a', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('b', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('c', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('d', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('e', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('f', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('g', 7, new Pawn(Board, Color.Black));
-            PutNewPiece('h', 7, new Pawn(Board, Color.Black));
+            PutNewPiece('a', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('b', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('c', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('d', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('e', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('f', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('g', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('h', 7, new Pawn(Board, Color.Black, this));
             PutNewPiece('a', 8, new Tower(Board, Color.Black));
             PutNewPiece('h', 8, new Tower(Board, Color.Black));
             PutNewPiece('b', 8, new Horse(Board, Color.Black));
@@ -271,8 +371,7 @@ namespace board
             PutNewPiece('c', 8, new Bishop(Board, Color.Black));
             PutNewPiece('f', 8, new Bishop(Board, Color.Black));
             PutNewPiece('e', 8, new Queen(Board, Color.Black));
-            PutNewPiece('d', 8, new King(Board, Color.Black));
+            PutNewPiece('d', 8, new King(Board, Color.Black, this));
         }
-
     }
 }

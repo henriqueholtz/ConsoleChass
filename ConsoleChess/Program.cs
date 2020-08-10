@@ -19,7 +19,10 @@ namespace ConsoleChess
                         Screen.PrintMatch(Match);
 
                         Console.WriteLine();
+                        ConsoleColor aux = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.Write("Source: ");
+                        Console.ForegroundColor = aux;
                         Position source = Screen.ReadPositionChess().ToPosition();
                         Match.ValidateSourcePosition(source);
 
@@ -29,7 +32,9 @@ namespace ConsoleChess
                         Screen.PrintBoard(Match.Board, PossiblesPositions);
 
                         Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.Write("Destiny: ");
+                        Console.ForegroundColor = aux;
                         Position destiny = Screen.ReadPositionChess().ToPosition();
                         Match.ValidateDestinyPosition(source, destiny);
                         Match.PerformMove(source, destiny);
@@ -40,6 +45,12 @@ namespace ConsoleChess
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
                     }
+                    //catch (Exception e)
+                    //{
+                    //    Console.WriteLine();
+                    //    Console.WriteLine(e.Message);
+                    //    Console.ReadLine();
+                    //}
                 }
                 Console.Clear();
                 Screen.PrintMatch(Match);
@@ -50,6 +61,12 @@ namespace ConsoleChess
                 Console.WriteLine(e.Message);
                 Console.ReadLine();
             }
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine();
+            //    Console.WriteLine(e.Message);
+            //    Console.ReadLine();
+            //}
         }
     }
 }

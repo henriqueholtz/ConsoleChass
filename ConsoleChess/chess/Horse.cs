@@ -16,7 +16,11 @@ namespace chess
         private bool CanMove(Position pos)
         {
             Piece p = Board.Piece(pos);
-            return p == null || p.Color != Color;
+            if (Board.ValidPosition(pos))
+            {
+                return p == null || p.Color != Color;
+            }
+            return false;
         }
 
         public override bool[,] PossibleMovements()

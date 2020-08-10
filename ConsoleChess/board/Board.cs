@@ -16,6 +16,7 @@ namespace board
 
         public Piece Piece(Position position)
         {
+            
             return Pieces[position.Line, position.Column];
         }
 

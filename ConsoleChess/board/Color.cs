@@ -6,6 +6,7 @@ namespace board
         White,
         Black,
         Red,
-        Yellow
+        Yellow,
+        Green
     }
 }

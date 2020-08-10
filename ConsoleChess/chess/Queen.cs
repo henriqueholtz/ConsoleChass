@@ -17,7 +17,11 @@ namespace chess
         private bool CanMove(Position pos)
         {
             Piece p = Board.Piece(pos);
-            return p == null || p.Color != Color;
+            //if (Board.ValidPosition(pos))
+            //{
+                return p == null || p.Color != Color;
+            //}
+            //return false;
         }
         public override bool[,] PossibleMovements()
         {
@@ -76,7 +80,7 @@ namespace chess
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color)
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color)
                 {
                     break;
                 }
@@ -88,7 +92,7 @@ namespace chess
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color)
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color)
                 {
                     break;
                 }
@@ -100,7 +104,7 @@ namespace chess
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color)
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color)
                 {
                     break;
                 }
@@ -112,7 +116,7 @@ namespace chess
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
-                if (Board.Piece(pos) == null && Board.Piece(pos).Color != Color)
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color)
                 {
                     break;
                 }

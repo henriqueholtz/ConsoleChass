@@ -16,6 +16,10 @@ namespace chess
 
         public Position ToPosition()
         {
+            if (Line > 8 || ( Column != 'a' && Column != 'a' && Column != 'b' && Column != 'c' && Column != 'd' && Column != 'e' && Column != 'f' && Column != 'g' && Column != 'h') || Column == ' ')
+            {
+                throw new BoardException("Invalid position!");
+            }
             return new Position(8 - Line, Column - 'a');
         }
 
