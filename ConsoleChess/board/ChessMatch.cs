@@ -357,7 +357,7 @@ namespace board
             PutNewPiece('d', 2, new Pawn(Board, Color.White, this));
             PutNewPiece('e', 2, new Pawn(Board, Color.White, this));
             PutNewPiece('f', 2, new Pawn(Board, Color.White, this));
-            PutNewPiece('g', 6, new Pawn(Board, Color.White, this));
+            PutNewPiece('g', 2, new Pawn(Board, Color.White, this));
             PutNewPiece('h', 2, new Pawn(Board, Color.White, this));
             PutNewPiece('a', 1, new Tower(Board, Color.White));
             PutNewPiece('h', 1, new Tower(Board, Color.White));
@@ -375,12 +375,12 @@ namespace board
             PutNewPiece('d', 7, new Pawn(Board, Color.Black, this));
             PutNewPiece('e', 7, new Pawn(Board, Color.Black, this));
             PutNewPiece('f', 7, new Pawn(Board, Color.Black, this));
-            //PutNewPiece('g', 7, new Pawn(Board, Color.Black, this));
+            PutNewPiece('g', 7, new Pawn(Board, Color.Black, this));
             PutNewPiece('h', 7, new Pawn(Board, Color.Black, this));
             PutNewPiece('a', 8, new Tower(Board, Color.Black));
             PutNewPiece('h', 8, new Tower(Board, Color.Black));
             PutNewPiece('b', 8, new Horse(Board, Color.Black));
-            //PutNewPiece('g', 8, new Horse(Board, Color.Black));
+            PutNewPiece('g', 8, new Horse(Board, Color.Black));
             PutNewPiece('c', 8, new Bishop(Board, Color.Black));
             PutNewPiece('f', 8, new Bishop(Board, Color.Black));
             PutNewPiece('e', 8, new Queen(Board, Color.Black));
